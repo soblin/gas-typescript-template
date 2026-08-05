@@ -1,0 +1,13 @@
+*.json
+!tsconfig.json
+!package.json
+!package-lock.json
+!.clasp.json
+dist/*
+!dist/appscript.json
+node_modules/
+
+!.claude/settings.json
+
+.steering/
+.worktrees/
