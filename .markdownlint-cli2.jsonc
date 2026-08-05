@@ -1,0 +1,13 @@
+{
+  "config": {
+    "default": true,
+    // Japanese prose lines routinely exceed 80 chars; not a meaningful signal here.
+    "MD013": false,
+    // Only flag duplicate headings within the same parent section.
+    "MD024": { "siblings_only": true },
+    // The steering templates intentionally use bold text as a callout, not a heading.
+    "MD036": false,
+    // Many fences wrap example prose/messages, not source code.
+    "MD040": false
+  }
+}

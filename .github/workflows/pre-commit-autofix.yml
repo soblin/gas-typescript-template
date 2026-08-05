@@ -1,0 +1,36 @@
+name: pre-commit
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v3
+
+      - name: install pre-commit
+        run: pip install pre-commit
+
+      - name: install fish
+        uses: fish-shop/install-fish-shell@v1
+
+      - name: run pre-commit
+        shell: fish {0}
+        run: pre-commit run
+
+      - name: push pre-commit fix
+        if: always()
+        uses: stefanzweifel/git-auto-commit-action@v7  # // cspell:disable-line
+        with:
+          commit_message: "style(pre-commit): autofix"
+          add_options: -u
