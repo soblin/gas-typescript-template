@@ -1,16 +1,16 @@
 ---
 name: initial-env-cred-setup
-description: Set up `clasp` settings and Google Platform credentials for efficient development of GAS in a CLI manner
+description: Set up `clasp` settings and Google Cloud Platform credentials for efficient CLI-based GAS development
 allowed-tools: Read, Write
 ---
 
 # Initial setup for project environment and credentials
 
-The Agent must proceed interactively when the user needs to set up Google Platform in the browser.
+The Agent must proceed interactively when the user needs to set up Google Cloud Platform in the browser.
 
 ## npm
 
-If `npm` is not found, terminate this task and set up `npm` first.
+If `npm` is not found, terminate this task and install `npm` first.
 
 ## Install packages and set `PATH`
 
@@ -18,7 +18,7 @@ If `npm` is not found, terminate this task and set up `npm` first.
 npm install
 ```
 
-Set `PATH` according to the shell.
+Set the `PATH` according to your shell.
 
 ```bash
 export PATH=$PATH:./node_modules/.bin
@@ -39,7 +39,7 @@ clasp login
 clasp clone <scriptId>
 ```
 
-After pulling from remote, fix the structure as follows.
+After pulling from remote, adjust the structure as follows.
 
 > [!NOTE]
 > Depending on the clasp version, the pulled script file may be named `code.js` or `index.js` — check what was actually cloned before removing.
@@ -50,7 +50,7 @@ mv appsscript.json dist
 rm code.js   # or index.js — remove whatever stale script file clasp clone produced
 ```
 
-And fix `.clasp.json` as follows.
+Then update `.clasp.json` as follows.
 
 ```json
 {
@@ -64,19 +64,19 @@ After editing, verify with `clasp show-file-status` that `dist/index.js` (or you
 
 ## Set up GCP
 
-First, the user needs to create a new GCP project and download the credentials as `creds.json` in the following steps.
+First, the user needs to create a new GCP project and download its credentials as `creds.json`, following the steps below.
 
-### Create project and install APIs
+### Create project and enable APIs
 
-The user will select and install `Google Apps Script` and others. The Agent must assist the user by referring to `docs/gas-setting.md`.
+The user will select and enable the `Google Apps Script` API and others. The Agent must assist the user by referring to `docs/gas-setting.md`.
 
 ![gcp-step1](./images/gcp-step1.png)
 
 ### Set up OAuth
 
-This part is user operation.
+This part is performed by the user.
 
-Refer to [reference](https://qiita.com/BONZINE/items/d296e7364dafd553591f#gcp%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A).
+Refer to [this guide](https://qiita.com/BONZINE/items/d296e7364dafd553591f#gcp%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A).
 
 ![gcp-step2](./images/gcp-step2.png)
 
@@ -96,9 +96,9 @@ Download the credentials JSON as `creds.json`.
 
 ### Integrate Apps Script with GCP
 
-The user will open the Apps Script "Project Settings" page and enter the GCP project number. The user also needs to keep the GCP project ID as `<projectId>` for the next step.
+The user will open the Apps Script "Project Settings" page and enter the GCP project number. The user also needs to note the GCP project ID as `<projectId>` for the next step.
 
-## Integrate and authorize with GCP to call remote function
+## Integrate and authorize with GCP to call remote functions
 
 Add a `projectId` field to `.clasp.json`.
 
@@ -114,15 +114,15 @@ Add a `projectId` field to `.clasp.json`.
 > [!NOTE]
 > clasp v3 removed the `clasp setting` subcommand — there is no `clasp setting projectId` anymore. Instead, add a `"projectId": "<projectId>"` field directly to `.clasp.json` (this is exactly what the old subcommand used to write on your behalf).
 
-Then get/update `.clasprc.json` by calling `clasp login --creds creds.json --use-project-scopes --include-clasp-scopes` and authorizing the app in the browser using the user's Google account. This cannot be driven through a non-interactive tool call — ask the user to run it themselves in their own terminal, and once finished, verify with `clasp show-authorized-user`.
+Then get/update `.clasprc.json` by running `clasp login --creds creds.json --use-project-scopes --include-clasp-scopes` and authorizing the app in the browser using the user's Google account. This cannot be driven through a non-interactive tool call — ask the user to run it themselves in their own terminal, and once finished, verify with `clasp show-authorized-user`.
 
 ## Validate permission scopes
 
-This part is in progress.
+This section is still in progress.
 
-Refer to `docs/gas-setting.md` and check if `dist/appscript.json`, `~/.clasprc.json`, etc. are consistent with the required permissions.
+Refer to `docs/gas-setting.md` and check whether `dist/appscript.json`, `~/.clasprc.json`, etc. are consistent with the required permissions.
 
-For example, the following field may be necessary in `dist/appscript.json`, although this setting is not necessary in combination with the `--use-project-scopes --include-clasp-scopes` options of `clasp`.
+For example, the following field may be needed in `dist/appscript.json`, although it isn't required when using `clasp`'s `--use-project-scopes --include-clasp-scopes` options.
 
 ```json
   "oauthScopes": [
