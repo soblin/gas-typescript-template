@@ -6,14 +6,15 @@ on:  # yamllint disable-line rule:truthy
       - opened
       - edited
       - synchronize
-      - reopened
+  #  yamllint disable-line rule:truthy
+  workflow_call:
 
 jobs:
   semantic-pull-request:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title
-        uses: amannn/action-semantic-pull-request@v6  # // cspell:disable-line
+        uses: amannn/action-semantic-pull-request@v5
         with:
           type: |
             feat
